@@ -2,11 +2,13 @@ import { products } from "@/data/data";
 import ProductCard from "./ProductCard";
 import Categories from "./Categories";
 import Link from "next/link";
+import Filter from "./Filter";
 
-export default function ProductList({ category }) {
+export default function ProductList({ category, params }) {
   return (
     <section>
       <Categories />
+      {params === "products" && <Filter />}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-12">
         {products.map((product, index) => {
           return <ProductCard product={product} index={index} key={index} />;

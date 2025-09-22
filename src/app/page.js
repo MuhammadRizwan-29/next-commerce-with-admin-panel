@@ -1,18 +1,15 @@
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import ProductList from "@/components/ProductList";
 
 export default async function Home({ searchParams }) {
-  const category = await searchParams.category;
+  const category = await searchParams?.category;
+  const params = await searchParams?.params;
   return (
     <>
-      <Header />
       <main className="max-w-6xl mx-auto p-4">
         <Hero />
-        <ProductList category={category} />
+        <ProductList category={category} params="/" />
       </main>
-      <Footer />
     </>
   );
 }
