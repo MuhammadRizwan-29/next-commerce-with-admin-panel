@@ -3,6 +3,7 @@
 import PaymentForm from "@/components/PaymentForm";
 import ShippingForm from "@/components/ShippingForm";
 import { cartItems, steps } from "@/data/data";
+import useCartStore from "@/store/cart";
 import { ArrowRight, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -13,6 +14,8 @@ export default function Cart() {
   const router = useRouter();
   const [shippingForm, setShippingForm] = useState(null);
 
+  const { cart, removeFromCart } = useCartStore();
+  console.log(cart);
   const activeStep = parseInt(searchParams.get("step") || "1");
   return (
     <>
@@ -53,11 +56,11 @@ export default function Cart() {
             {/* STEPS */}
             <div className="w-full lg:w-7/12 shadow-lg border-1 border-gray-100 p-8 rounded-lg flex flex-col gap-8">
               {activeStep === 1 ? (
-                cartItems.map((item) => {
+                cart.map((item) => {
                   return (
                     <div
                       className="flex items-center justify-between"
-                      key={item.id}
+                      key={item.id + item.selectedSize + item.selectedColor}
                     >
                       {/* IMAGE & DETAILS */}
                       <div className="flex gap-8">
@@ -89,7 +92,10 @@ export default function Cart() {
                           </p>
                         </div>
                       </div>
-                      <button className="w-8 h-8 rounded-full bg-red-100 text-red-400 flex items-center justify-center cursor-pointer transition-all duration-300">
+                      <button
+                        onClick={() => removeFromCart(item)}
+                        className="w-8 h-8 rounded-full bg-red-100 text-red-400 flex items-center justify-center cursor-pointer transition-all duration-300"
+                      >
                         <Trash2 className="w-3 h-3" />
                       </button>
                     </div>
@@ -113,7 +119,7 @@ export default function Cart() {
                   <p className="text-gray-500">Subtotal</p>
                   <p className="font-medium">
                     $
-                    {cartItems
+                    {cart
                       .reduce(
                         (acc, item) => acc + item.price * item.quantity,
                         0
@@ -134,7 +140,7 @@ export default function Cart() {
                   <p className="text-gray-800 font-semibold">Total</p>
                   <p className="font-medium">
                     $
-                    {cartItems
+                    {cart
                       .reduce(
                         (acc, item) => acc + item.price * item.quantity,
                         0
