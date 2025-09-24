@@ -15,7 +15,6 @@ export default function Cart() {
   const [shippingForm, setShippingForm] = useState(null);
 
   const { cart, removeFromCart } = useCartStore();
-  console.log(cart);
   const activeStep = parseInt(searchParams.get("step") || "1");
   return (
     <>
